@@ -48,7 +48,8 @@ const botRight  = document.querySelector("#sq8")
 const statusMessage= document.querySelector('#message')
 
 /*----------------------------- Event Listeners -----------------------------*/
-
+// event listeners for the actions a user can do on the board in HTML
+// One listener for each square or just for the board as a whole?
 
 
 /*-------------------------------- Functions --------------------------------*/
@@ -105,4 +106,16 @@ function render(whatToRender, statusToRender){
       return "It is a tie!"
     }
   }
+}
+
+// handleClick function to obtain index of square clicked by user
+// index could be obtained by dertmaining the specific ID
+// perhaps by looking at the target info in the "board" class
+// or the specific div id that was clicked?
+
+function handleClick() {
+
+
+
+
 }
