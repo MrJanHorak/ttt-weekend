@@ -50,7 +50,7 @@ const statusMessage= document.querySelector('#message')
 /*----------------------------- Event Listeners -----------------------------*/
 // event listeners for the actions a user can do on the board in HTML
 // One listener for each square or just for the board as a whole?
-
+board.addEventListener("click", handleClick)
 
 /*-------------------------------- Functions --------------------------------*/
 init()
@@ -60,7 +60,7 @@ function init(){
   // initialize the default game variables
   turn = 1
   winner = null
-  squaresOnBoard = [1,null,-1,1,-1,null,1,null,-1]
+  squaresOnBoard = [null,null,null,null,null,null,null,null,null]
 
   //initialize the beginning messages to start the game
   statusMessage.innerHTML = `${render(turn)}`
@@ -70,7 +70,7 @@ function init(){
 
 }
 
-function render(whatToRender, statusToRender){
+function render(whatToRender){
   // render function loops over squaresOnBoard array
   // the index of the array corresponds with a specific square
 
@@ -102,20 +102,46 @@ function render(whatToRender, statusToRender){
       return "Player X wins!"
     } else if (winner === -1) {
       return "Player O wins!"
-    } else if (winner === t) {
+    } else if (winner === "t") {
       return "It is a tie!"
     }
   }
 }
 
-// handleClick function to obtain index of square clicked by user
-// index could be obtained by dertmaining the specific ID
-// perhaps by looking at the target info in the "board" class
-// or the specific div id that was clicked?
 
-function handleClick() {
+function handleClick(event) {
+  // handleClick function to obtain index of square clicked by user
+  // by extracting it from the target id 
+  // if a square has already been selected (has a value) it will return instantly
+  // if the game is over it will intantly return
+  // if those are not the case it will update the squaresOnTheBoard array
+  // it will change the player turn value by multiplying with -1
+  
+  index = event.target.id[2]
+  if (squaresOnBoard[index]!==null){return} 
+  if (winner !== null){return}
+  squaresOnBoard[index] = turn
+  turn=turn*-1
+  winner = getWinner(squaresOnBoard)
+  render(squaresOnBoard, event.id)
+  render(winner)
+  render(turn)
 
+  console.log(index)
+  console.log(turn)
+  console.log(squaresOnBoard)
+  if (turn===1){
+  
+  squaresOnBoard[1].push(1)
+  event.target.innerHTML = whatToRender(squaresOnBoard)
+} else {
+  event.target.style.backgroundColor = "blue"
+}
+  console.dir(event.target)
 
+}
+
+function getWinner(){
 
 
 }
