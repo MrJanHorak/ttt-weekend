@@ -4,29 +4,19 @@
 // since one player is identified by -1 that will need to be considered when
 // comparing the actual board status with this array og arrays.
 
-// const winningArrays = [
-//     [1,1,1,0,0,0,0,0,0],
-//     [0,0,0,1,1,1,0,0,0],
-//     [0,0,0,0,0,0,1,1,1],
-//     [1,0,0,1,0,0,1,0,0],
-//     [0,1,0,0,1,0,0,1,0],
-//     [0,0,1,0,0,1,0,0,1],
-//     [1,0,0,0,1,0,0,0,1],
-//     [0,0,1,0,1,0,1,0,0]]
-
 // Alternative thought the array of arrays could be only the index of the winning squares
 // these indexes should have a sum of 3 when compared to the status of the squaresOnBoard
 // here the sum would have to be == 3 (to account for negative 3 if player O wins)
 // the winner would the determined by the value in the first index of the winning combo 
 // (-1 || 1)
-const winningArrays = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+const winningCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 
 
 /*---------------------------- Variables (state) ----------------------------*/
 //let squaresOnBoard = []
 // initialize variables needed for game state tracking
 // will not be initialized until init()
-let turn, winner, squaresOnBoard
+let turn, winner, squaresOnBoard, arrayId, sumOfClicks, squareId
 
 
 /*------------------------ Cached Element References ------------------------*/
@@ -35,17 +25,20 @@ let turn, winner, squaresOnBoard
 // each square has its own id to match the index in the boardArray
 // game status elements are also recorded here as they are always on display
 // and refered to.
+
+// const topLeft   = document.querySelector("#sq0")
+// const topCenter = document.querySelector("#sq1")
+// const topRight  = document.querySelector("#sq2")
+// const midLeft   = document.querySelector("#sq3")
+// const midCenter = document.querySelector("#sq4")
+// const midRigbt  = document.querySelector("#sq5")
+// const botLeft   = document.querySelector("#sq6")
+// const botCenter = document.querySelector("#sq7")
+// const botRight  = document.querySelector("#sq8")
+
 const board     = document.querySelector(".board")
-const topLeft   = document.querySelector("#sq0")
-const topCenter = document.querySelector("#sq1")
-const topRight  = document.querySelector("#sq2")
-const midLeft   = document.querySelector("#sq3")
-const midCenter = document.querySelector("#sq4")
-const midRigbt  = document.querySelector("#sq5")
-const botLeft   = document.querySelector("#sq6")
-const botCenter = document.querySelector("#sq7")
-const botRight  = document.querySelector("#sq8")
 const statusMessage= document.querySelector('#message')
+const allSquares = document.querySelectorAll('.square')
 
 /*----------------------------- Event Listeners -----------------------------*/
 // event listeners for the actions a user can do on the board in HTML
@@ -58,53 +51,53 @@ init()
 function init(){
   // initialize beginning game status
   // initialize the default game variables
+  // initialize the beginning messages to start the game
+  // render the state variables to the page calling render() function
+  
   turn = 1
   winner = null
   squaresOnBoard = [null,null,null,null,null,null,null,null,null]
-
-  //initialize the beginning messages to start the game
-  statusMessage.innerHTML = `${render(turn)}`
-
-  //render the state variables to the page calling render() function
-  
+  statusMessage.innerText = `${render()}`
+  render()
 
 }
 
-function render(whatToRender){
+function render(){
   // render function loops over squaresOnBoard array
   // the index of the array corresponds with a specific square
 
-  //render the status of a squareOnTheBoard based upon the value at the corresponding index
-  if (whatToRender === squaresOnBoard){
-    for (let i=0; i<squaresOnBoard.length; i++){
-      if (i === null) {
-        return
-      } else if ( i === 1) {
-        return "X"
-      } else {
-        return "O"
-      }
-    }
+  // render the status of a squareOnTheBoard based upon the value at the corresponding index
+
+  for (let i=0; i<9; i++){
+    //allSquares[i] = squaresOnBoard[i]
+    if ( squaresOnBoard[i] === 1) {
+      allSquares[i].style.backgroundColor = "blue"
+      allSquares[i].innerText = "X"
+    } else if ( squaresOnBoard[i] === -1){
+      allSquares[i].style.backgroundColor = "red"
+      allSquares[i].innerText = "O"
+    }else if (squaresOnBoard[i] === null) { 
+      allSquares[i].style.backgroundColor = "grey"
+    } 
   }
-  //render whose turn it is on the screen based upong the turn variables value
-    if (whatToRender === turn){
-      if (turn === 1) {
-        return "Player X it is your turn"
-      } else {
-        return "Player O it is your turn"
-      }
-    }
-  //Consider using ternary inside template literal for this following if statement
-  if (whatToRender === winner){
-    if (winner === null){
-      return 
-    } else if (winner === 1) {
-      return "Player X wins!"
-    } else if (winner === -1) {
-      return "Player O wins!"
-    } else if (winner === "t") {
-      return "It is a tie!"
-    }
+
+  // render whose turn it is on the screen based upong the turn variables value
+
+  if (turn === 1) {
+    statusMessage.innerText = `Player X it is your turn`
+  } else if (turn === -1) {
+    statusMessage.innerText = `Player O it is your turn`
+  }
+
+  // Consider using ternary inside template literal for this following if statement
+  //if (winner === null){
+     
+  if (winner === 1) {
+    statusMessage.innerText = `"Player X wins!` 
+  } else if (winner === -1) {
+    statusMessage.innerText = `Player O wins!` 
+  } else if (winner === "t") {
+    statusMessage.innerText = `It's a tie!`
   }
 }
 
@@ -116,32 +109,43 @@ function handleClick(event) {
   // if the game is over it will intantly return
   // if those are not the case it will update the squaresOnTheBoard array
   // it will change the player turn value by multiplying with -1
-  
-  index = event.target.id[2]
-  if (squaresOnBoard[index]!==null){return} 
-  if (winner !== null){return}
-  squaresOnBoard[index] = turn
-  turn=turn*-1
-  winner = getWinner(squaresOnBoard)
-  render(squaresOnBoard, event.id)
-  render(winner)
-  render(turn)
-
-  console.log(index)
-  console.log(turn)
-  console.log(squaresOnBoard)
-  if (turn===1){
-  
-  squaresOnBoard[1].push(1)
-  event.target.innerHTML = whatToRender(squaresOnBoard)
-} else {
-  event.target.style.backgroundColor = "blue"
-}
-  console.dir(event.target)
-
+    
+    index = parseInt(event.target.id)
+    if (squaresOnBoard[index]!==null){return} 
+    //if (winner !== null){return}
+    squaresOnBoard[index] = turn
+    //arrayId = event.target.id
+    
+    // if (turn===1){
+    //   squaresOnBoard[index]=turn
+    // } else {
+    //   squaresOnBoard[index]=turn
+    // }
+    
+    winner = getWinner()    
+    turn = turn*-1
+    render()
 }
 
 function getWinner(){
-
-
+  // loop through winnimgCombos to determing the winner
+  // if a match in the squaresOnBoard totals Math.abs() to 3 then there is a winner
+  // the winner is determined by the value in any (we will choose the 1st) index of the array
+  // loop through each possible winning combo
+  // for each of the possible combos loop through the squaresOnBoard to see if they
+  // provide a winnor or not and set winner variable accordingly
+  winningCombos.forEach(function(array){
+    sumOfClicks = 0
+    array.forEach(function(indexLocation){
+      sumOfClicks += squaresOnBoard[indexLocation]
+      if (Math.abs(sumOfClicks)===3){
+          winner = squaresOnBoard[0]
+          console.log('squares on board in winner if',squaresOnBoard[0])
+          console.log(winner)
+     } else if (squaresOnBoard.includes(null)===false && winner!==null){
+       winner = 't'
+     }
+    })
+console.log('winner',winner)
+  })
 }
