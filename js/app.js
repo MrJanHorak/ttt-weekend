@@ -1,5 +1,25 @@
 /*-------------------------------- Constants --------------------------------*/
+// An array of arrays containing all 8 possible win combinations
+// A win is when 3 indexes add up to 3 when the sum is calculated.
+// since one player is identified by -1 that will need to be considered when
+// comparing the actual board status with this array og arrays.
 
+// const winningArrays = [
+//     [1,1,1,0,0,0,0,0,0],
+//     [0,0,0,1,1,1,0,0,0],
+//     [0,0,0,0,0,0,1,1,1],
+//     [1,0,0,1,0,0,1,0,0],
+//     [0,1,0,0,1,0,0,1,0],
+//     [0,0,1,0,0,1,0,0,1],
+//     [1,0,0,0,1,0,0,0,1],
+//     [0,0,1,0,1,0,1,0,0]]
+
+// Alternative thought the array of arrays could be only the index of the winning squares
+// these indexes should have a sum of 3 when compared to the status of the squaresOnBoard
+// here the sum would have to be == 3 (to account for negative 3 if player O wins)
+// the winner would the determined by the value in the first index of the winning combo 
+// (-1 || 1)
+const winningArrays = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 
 
 /*---------------------------- Variables (state) ----------------------------*/
@@ -42,7 +62,7 @@ function init(){
   squaresOnBoard = [1,null,-1,1,-1,null,1,null,-1]
 
   //initialize the beginning messages to start the game
-  statusMessage.innerHTML = `${render(turn)} you may begin the game!<br /> Make the first move!`
+  statusMessage.innerHTML = `${render(turn)}`
 
   //render the state variables to the page calling render() function
   
@@ -53,25 +73,7 @@ function render(whatToRender, statusToRender){
   // render function loops over squaresOnBoard array
   // the index of the array corresponds with a specific square
 
-//Consider using ternary inside template literal for this following if statement
-  if (whatToRender === winner){
-    if (winner === null){
-      return "Game still in Progress"
-    } else if (winner === 1) {
-      return "Player X wins!"
-    } else {
-      return "Player O wins!"
-    }  
-  }
-
-  if (whatToRender === turn){
-    if (turn === 1) {
-      return "Player X it is your turn"
-    } else {
-      return "Player O it is your turn"
-    }
-  }
-
+  //render the status of a squareOnTheBoard based upon the value at the corresponding index
   if (whatToRender === squaresOnBoard){
     for (let i=0; i<squaresOnBoard.length; i++){
       if (i === null) {
@@ -82,9 +84,25 @@ function render(whatToRender, statusToRender){
         return "O"
       }
     }
-
   }
-
-
-
+  //render whose turn it is on the screen based upong the turn variables value
+    if (whatToRender === turn){
+      if (turn === 1) {
+        return "Player X it is your turn"
+      } else {
+        return "Player O it is your turn"
+      }
+    }
+  //Consider using ternary inside template literal for this following if statement
+  if (whatToRender === winner){
+    if (winner === null){
+      return 
+    } else if (winner === 1) {
+      return "Player X wins!"
+    } else if (winner === -1) {
+      return "Player O wins!"
+    } else if (winner === t) {
+      return "It is a tie!"
+    }
+  }
 }
