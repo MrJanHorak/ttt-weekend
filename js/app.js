@@ -5,6 +5,8 @@
 const winningCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 const tic = new Audio('../audio/clock.wav')
 const toc = new Audio('../audio/button6.wav')
+const tie = new Audio(`../audio/outOfTouch.wav`)
+const win = new Audio('../audio/weAreChampions.wav')
 
 /*---------------------------- Variables (state) ----------------------------*/
 // initialize variables needed for game state tracking
@@ -40,6 +42,14 @@ function init(){
   // initialize the beginning messages to start the game
   // re-initialize the game when play again is clicked
   
+  //the following lines stop sound playback upon reset
+  //and reset the sound t begin from the start upon next play
+
+  win.pause()
+  win.currentTime = 0;
+  tie.pause()
+  tie.currentTime = 0;
+  
   turn = 1
   winner = null
   squaresOnBoard = [null,null,null,null,null,null,null,null,null]
@@ -67,7 +77,6 @@ function render(){
 
     let sqId = parseInt(allSquares[i].id.charAt(2))
 
-    console.log(sqId)
     if ( squaresOnBoard[i] === 1) {
       tic.play()
       allSquares[sqId].style.backgroundColor = "blue"
@@ -106,7 +115,6 @@ function handleClick(event) {
   
   turn = turn*-1
   winner=getWinner() 
-  
   render()
 }
 
@@ -124,8 +132,9 @@ function getWinner(){
       sumOfClicks += squaresOnBoard[indexLocation]
       if (Math.abs(sumOfClicks)===3){
          winner=squaresOnBoard[indexLocation]
+         win.play()
       } else if (squaresOnBoard.includes(null)===false && winner===null){
-          winner='t'
+          winner='t' && tie.play()
       }
     })
   })
