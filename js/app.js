@@ -10,7 +10,7 @@ const toc = new Audio('../audio/button6.wav')
 // initialize variables needed for game state tracking
 // will not be initialized until init()
 
-let turn, winner, squaresOnBoard, sumOfClicks, 
+let turn, winner, squaresOnBoard, sumOfClicks
 
 /*------------------------ Cached Element References ------------------------*/
 // cached element references that are accessed through out the code
@@ -18,10 +18,10 @@ let turn, winner, squaresOnBoard, sumOfClicks,
 // the board is used to access the target.id on the click event.
 // the allSquares calls the class of the squares
 
-const board         = document.querySelector(".board")
+const board = document.querySelector(".board")
 const statusMessage = document.querySelector('#message')
-const allSquares    = document.querySelectorAll('.square')
-const replayButton  = document.querySelector("#reset")
+const allSquares = document.querySelectorAll('.square')
+const replayButton = document.querySelector("#reset")
 
 /*----------------------------- Event Listeners -----------------------------*/
 // event listeners for the actions a user can do on the board in HTML
@@ -43,30 +43,21 @@ function init(){
   turn = 1
   winner = null
   squaresOnBoard = [null,null,null,null,null,null,null,null,null]
-  statusMessage.innerText = render()
+  //statusMessage.innerText = render()
   render()
   
 }
 
 function render(){
-  // render function loops over squaresOnBoard array
-  // render changes the output on the screen according to 
-  // the values of the variables winner & turn and checks 
-  // the value of the squaresOnBoard array to match the screen
-  // to the values recorded in the array
+  // Provides output of the current game state to the screen
 
-  // Consider using ternary inside template literal for this following if statement
-  if (winner === 1) {
-    statusMessage.innerText = "Player X wins!" 
-  } else if (winner === -1) {
-    statusMessage.innerText = "Player O wins!" 
-  } else if (winner === "t") {
-    statusMessage.innerText = "It's a tie!"
-  }else if (turn === 1) {
-    statusMessage.innerText = `Player X it is your turn`
-  } else if (turn === -1) {
-    statusMessage.innerText = `Player O it is your turn`
-}
+  //displays who turn it is
+  `${statusMessage.innerText = turn === 1 ? "Player X it is your turn!": "Player O it is your turn!"}`
+
+  //checks if there is a winner or tie and displays accordingly
+  if (winner !== null){
+  `${statusMessage.innerText = winner === 1 ? "Player X wins!" : winner===-1 ?"Player O wins!": "It's a tie!"}` 
+  }
 
   // render the status of a squareOnTheBoard based upon the value 
   // found at the corresponding index
