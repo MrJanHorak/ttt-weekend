@@ -10,7 +10,8 @@
 // the winner would the determined by the value in the first index of the winning combo 
 // (-1 || 1)
 const winningCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
-
+const tic = new Audio('../audio/clock.wav')
+const toc = new Audio('../audio/button6.wav')
 
 /*---------------------------- Variables (state) ----------------------------*/
 //let squaresOnBoard = []
@@ -76,9 +77,11 @@ function render(){
   for (let i=0; i<9; i++){
 
     if ( squaresOnBoard[i] === 1) {
+      tic.play()
       allSquares[i].style.backgroundColor = "blue"
       allSquares[i].innerText = "X"
     } else if ( squaresOnBoard[i] === -1){
+      toc.play()
       allSquares[i].style.backgroundColor = "red"
       allSquares[i].innerText = "O"
     }else if (squaresOnBoard[i] === null) { 
