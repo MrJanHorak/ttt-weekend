@@ -57,19 +57,33 @@ function init(){
   turn = 1
   winner = null
   squaresOnBoard = [null,null,null,null,null,null,null,null,null]
-  statusMessage.innerText = `${render()}`
+  statusMessage.innerText = render()
   render()
-
+  
 }
 
 function render(){
   // render function loops over squaresOnBoard array
   // the index of the array corresponds with a specific square
-
+  // Consider using ternary inside template literal for this following if statement
+  if (winner === 1) {
+    statusMessage.innerText = "Player X wins!" 
+  } else if (winner === -1) {
+    statusMessage.innerText = "Player O wins!" 
+  } else if (winner === "t") {
+    statusMessage.innerText = "It's a tie!"
+  }else if (turn === 1) {
+    statusMessage.innerText = `Player X it is your turn`
+  } else if (turn === -1) {
+    statusMessage.innerText = `Player O it is your turn`
+}
+  
+  
+  
   // render the status of a squareOnTheBoard based upon the value at the corresponding index
-
+  
   for (let i=0; i<9; i++){
-    //allSquares[i] = squaresOnBoard[i]
+
     if ( squaresOnBoard[i] === 1) {
       allSquares[i].style.backgroundColor = "blue"
       allSquares[i].innerText = "X"
@@ -79,25 +93,6 @@ function render(){
     }else if (squaresOnBoard[i] === null) { 
       allSquares[i].style.backgroundColor = "grey"
     } 
-  }
-
-  // render whose turn it is on the screen based upong the turn variables value
-
-  if (turn === 1) {
-    statusMessage.innerText = `Player X it is your turn`
-  } else if (turn === -1) {
-    statusMessage.innerText = `Player O it is your turn`
-  }
-
-  // Consider using ternary inside template literal for this following if statement
-  //if (winner === null){
-     
-  if (winner === 1) {
-    statusMessage.innerText = `"Player X wins!` 
-  } else if (winner === -1) {
-    statusMessage.innerText = `Player O wins!` 
-  } else if (winner === "t") {
-    statusMessage.innerText = `It's a tie!`
   }
 }
 
@@ -110,21 +105,19 @@ function handleClick(event) {
   // if those are not the case it will update the squaresOnTheBoard array
   // it will change the player turn value by multiplying with -1
     
-    index = parseInt(event.target.id)
+  index = parseInt(event.target.id)
+  
+  if (winner === 1 || winner === -1 || winner === 't'){
+    return
+  }else{
     if (squaresOnBoard[index]!==null){return} 
-    //if (winner !== null){return}
-    squaresOnBoard[index] = turn
-    //arrayId = event.target.id
-    
-    // if (turn===1){
-    //   squaresOnBoard[index]=turn
-    // } else {
-    //   squaresOnBoard[index]=turn
-    // }
-    
-    winner = getWinner()    
-    turn = turn*-1
-    render()
+  }
+  squaresOnBoard[index] = turn
+  
+  turn = turn*-1
+  winner=getWinner() 
+  
+  render()
 }
 
 function getWinner(){
@@ -139,13 +132,11 @@ function getWinner(){
     array.forEach(function(indexLocation){
       sumOfClicks += squaresOnBoard[indexLocation]
       if (Math.abs(sumOfClicks)===3){
-          winner = squaresOnBoard[0]
-          console.log('squares on board in winner if',squaresOnBoard[0])
-          console.log(winner)
-     } else if (squaresOnBoard.includes(null)===false && winner!==null){
-       winner = 't'
+         winner=squaresOnBoard[indexLocation]
+     } else if (squaresOnBoard.includes(null)===false && winner===null){
+        winner='t'
      }
     })
-console.log('winner',winner)
   })
+  return winner
 }
