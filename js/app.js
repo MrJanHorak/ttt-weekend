@@ -1,30 +1,22 @@
 /*-------------------------------- Constants --------------------------------*/
 // An array of arrays containing all 8 possible win combinations
-// A win is when 3 indexes add up to 3 when the sum is calculated.
-// since one player is identified by -1 that will need to be considered when
-// comparing the actual board status with this array og arrays.
+// Audio clips for enhanced game playing experience
 
-// Alternative thought the array of arrays could be only the index of the winning squares
-// these indexes should have a sum of 3 when compared to the status of the squaresOnBoard
-// here the sum would have to be == 3 (to account for negative 3 if player O wins)
-// the winner would the determined by the value in the first index of the winning combo 
-// (-1 || 1)
 const winningCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 const tic = new Audio('../audio/clock.wav')
 const toc = new Audio('../audio/button6.wav')
 
 /*---------------------------- Variables (state) ----------------------------*/
-//let squaresOnBoard = []
 // initialize variables needed for game state tracking
 // will not be initialized until init()
-let turn, winner, squaresOnBoard, arrayId, sumOfClicks, squareId
+
+let turn, winner, squaresOnBoard, sumOfClicks, 
 
 /*------------------------ Cached Element References ------------------------*/
 // cached element references that are accessed through out the code
-// these are the nine squares used to create the board and play the game
-// each square has its own id to match the index in the boardArray
-// game status elements are also recorded here as they are always on display
-// and refered to.
+// the playing field is found in both the board and allSquares arrays
+// the board is used to access the target.id on the click event.
+// the allSquares calls the class of the squares
 
 const board         = document.querySelector(".board")
 const statusMessage = document.querySelector('#message')
@@ -33,7 +25,9 @@ const replayButton  = document.querySelector("#reset")
 
 /*----------------------------- Event Listeners -----------------------------*/
 // event listeners for the actions a user can do on the board in HTML
-// One listener for each square or just for the board as a whole?
+// one for the board to see which square is selected
+// the other for the reset or play again button
+
 board.addEventListener("click", handleClick)
 replayButton.addEventListener("click", init)
 
@@ -44,7 +38,7 @@ function init(){
   // initialize beginning game status
   // initialize the default game variables
   // initialize the beginning messages to start the game
-  // render the state variables to the page calling render() function
+  // re-initialize the game when play again is clicked
   
   turn = 1
   winner = null
@@ -56,7 +50,11 @@ function init(){
 
 function render(){
   // render function loops over squaresOnBoard array
-  // the index of the array corresponds with a specific square
+  // render changes the output on the screen according to 
+  // the values of the variables winner & turn and checks 
+  // the value of the squaresOnBoard array to match the screen
+  // to the values recorded in the array
+
   // Consider using ternary inside template literal for this following if statement
   if (winner === 1) {
     statusMessage.innerText = "Player X wins!" 
@@ -69,10 +67,11 @@ function render(){
   } else if (turn === -1) {
     statusMessage.innerText = `Player O it is your turn`
 }
-  
-  
-  
-  // render the status of a squareOnTheBoard based upon the value at the corresponding index
+
+  // render the status of a squareOnTheBoard based upon the value 
+  // found at the corresponding index
+  // sound effects, css and innerText of HTML elements are all set
+  // or triggered here as well.
   
   for (let i=0; i<9; i++){
 
@@ -93,12 +92,13 @@ function render(){
 
 
 function handleClick(event) {
-  // handleClick function to obtain index of square clicked by user
-  // by extracting it from the target id 
-  // if a square has already been selected (has a value) it will return instantly
-  // if the game is over it will intantly return
-  // if those are not the case it will update the squaresOnTheBoard array
-  // it will change the player turn value by multiplying with -1
+  // handleClick function obtains index of square clicked by user
+  // by extracting it from the target id of the click event
+  // if a square has already been selected (has a value in the array at
+  // the corresponding index in the array) it will return instantly
+  // if the game is over it will return instantly
+  // it changes the player turn value by multiplying with -1
+  // it calls render to update the board to match the user actions
     
   index = parseInt(event.target.id)
   
@@ -116,21 +116,22 @@ function handleClick(event) {
 }
 
 function getWinner(){
-  // loop through winnimgCombos to determing the winner
-  // if a match in the squaresOnBoard totals Math.abs() to 3 then there is a winner
-  // the winner is determined by the value in any (we will choose the 1st) index of the array
-  // loop through each possible winning combo
-  // for each of the possible combos loop through the squaresOnBoard to see if they
-  // provide a winnor or not and set winner variable accordingly
+  // loop through each possible winning combo recorded in the 
+  // winningCombos array and then loop each of the possible combos 
+  // through the squaresOnBoard to see if they provide a winner or 
+  // not. A wuinner is found when the values contained at the index 
+  // positions provided by the winningCombo array add up to an absolute
+  // value of 3 (that means -3 or +3). Set winner value and return.
+
   winningCombos.forEach(function(array){
     sumOfClicks = 0
     array.forEach(function(indexLocation){
       sumOfClicks += squaresOnBoard[indexLocation]
       if (Math.abs(sumOfClicks)===3){
          winner=squaresOnBoard[indexLocation]
-     } else if (squaresOnBoard.includes(null)===false && winner===null){
-        winner='t'
-     }
+      } else if (squaresOnBoard.includes(null)===false && winner===null){
+          winner='t'
+      }
     })
   })
   return winner
