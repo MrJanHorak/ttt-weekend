@@ -18,7 +18,6 @@ const winningCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[
 // will not be initialized until init()
 let turn, winner, squaresOnBoard, arrayId, sumOfClicks, squareId
 
-
 /*------------------------ Cached Element References ------------------------*/
 // cached element references that are accessed through out the code
 // these are the nine squares used to create the board and play the game
@@ -26,24 +25,16 @@ let turn, winner, squaresOnBoard, arrayId, sumOfClicks, squareId
 // game status elements are also recorded here as they are always on display
 // and refered to.
 
-// const topLeft   = document.querySelector("#sq0")
-// const topCenter = document.querySelector("#sq1")
-// const topRight  = document.querySelector("#sq2")
-// const midLeft   = document.querySelector("#sq3")
-// const midCenter = document.querySelector("#sq4")
-// const midRigbt  = document.querySelector("#sq5")
-// const botLeft   = document.querySelector("#sq6")
-// const botCenter = document.querySelector("#sq7")
-// const botRight  = document.querySelector("#sq8")
-
-const board     = document.querySelector(".board")
-const statusMessage= document.querySelector('#message')
-const allSquares = document.querySelectorAll('.square')
+const board         = document.querySelector(".board")
+const statusMessage = document.querySelector('#message')
+const allSquares    = document.querySelectorAll('.square')
+const replayButton  = document.querySelector("#reset")
 
 /*----------------------------- Event Listeners -----------------------------*/
 // event listeners for the actions a user can do on the board in HTML
 // One listener for each square or just for the board as a whole?
 board.addEventListener("click", handleClick)
+replayButton.addEventListener("click", init)
 
 /*-------------------------------- Functions --------------------------------*/
 init()
@@ -92,6 +83,7 @@ function render(){
       allSquares[i].innerText = "O"
     }else if (squaresOnBoard[i] === null) { 
       allSquares[i].style.backgroundColor = "grey"
+      allSquares[i].innerText = ""
     } 
   }
 }
