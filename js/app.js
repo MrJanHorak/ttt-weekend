@@ -19,8 +19,8 @@ let turn, winner, squaresOnBoard, sumOfClicks
 // the allSquares calls the class of the squares
 
 const board = document.querySelector(".board")
-const statusMessage = document.querySelector('#message')
 const allSquares = document.querySelectorAll('.square')
+const statusMessage = document.querySelector('#message')
 const replayButton = document.querySelector("#reset")
 
 /*----------------------------- Event Listeners -----------------------------*/
@@ -43,7 +43,6 @@ function init(){
   turn = 1
   winner = null
   squaresOnBoard = [null,null,null,null,null,null,null,null,null]
-  //statusMessage.innerText = render()
   render()
   
 }
@@ -66,17 +65,20 @@ function render(){
   
   for (let i=0; i<9; i++){
 
+    let sqId = parseInt(allSquares[i].id.charAt(2))
+
+    console.log(sqId)
     if ( squaresOnBoard[i] === 1) {
       tic.play()
-      allSquares[i].style.backgroundColor = "blue"
-      allSquares[i].innerText = "X"
+      allSquares[sqId].style.backgroundColor = "blue"
+      allSquares[sqId].innerText = "X"
     } else if ( squaresOnBoard[i] === -1){
       toc.play()
-      allSquares[i].style.backgroundColor = "red"
-      allSquares[i].innerText = "O"
+      allSquares[sqId].style.backgroundColor = "red"
+      allSquares[sqId].innerText = "O"
     }else if (squaresOnBoard[i] === null) { 
-      allSquares[i].style.backgroundColor = "grey"
-      allSquares[i].innerText = ""
+      allSquares[sqId].style.backgroundColor = "grey"
+      allSquares[sqId].innerText = ""
     } 
   }
 }
@@ -91,7 +93,9 @@ function handleClick(event) {
   // it changes the player turn value by multiplying with -1
   // it calls render to update the board to match the user actions
     
-  index = parseInt(event.target.id)
+  //index = parseInt(event.target.id)
+
+  index = parseInt(event.target.id.charAt(2))
   
   if (winner === 1 || winner === -1 || winner === 't'){
     return
