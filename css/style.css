@@ -1,12 +1,14 @@
 body {
-    background-color: gray;
+    /*background-color: gray;
 	/* Use a system font, if none are available use an available sans-sarif   font */
-	font-family: Verdana, Geneva, Tahoma, sans-serif
-	margin: 0;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
   height: 100vh;
   display: flex;
   flex-direction: column;
   text-align: center;
+  background-color: transparent;
+  background-image: url('/images/My Post.png');
+  background-size: cover;
 }
 
 section.board {
@@ -15,33 +17,26 @@ section.board {
   grid-template-columns: repeat(3, 10vmin);
   grid-gap: 0vmin;
   margin: 25px auto;
+  align-items: stretch;
+  
 }
 
 div {
-  border: 5px solid black;
-  font-size: 5.5vh;
-  text-align: center;
-  vertical-align: top;
-  border-radius: 25px;
-  margin: 5px;
+  background: transparent;
+  margin: 16px 10px 0px 10px;
+  background-position: center;
+  background-size: cover;
+
 }
 
 .board {
-  background-color: lightgray;
-  border-radius: 25px;
-}
-
-.x {
-  color: #ffb04b;
-}
-
-.o {
-  color:#00a7f7;
-}
+  background-color: transparent;
+  background-image: url('/images/grid.png');
+  background-size: cover;
+  }
 
 button {
   outline: none;
-  
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: bold;

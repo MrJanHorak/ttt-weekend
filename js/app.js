@@ -49,7 +49,7 @@ function init(){
   win.currentTime = 0;
   tie.pause()
   tie.currentTime = 0;
-  
+
   turn = 1
   winner = null
   squaresOnBoard = [null,null,null,null,null,null,null,null,null]
@@ -79,14 +79,12 @@ function render(){
 
     if ( squaresOnBoard[i] === 1) {
       tic.play()
-      allSquares[sqId].style.backgroundColor = "blue"
-      allSquares[sqId].innerText = "X"
+      allSquares[sqId].style.backgroundImage = "url(/images/x.png)"
     } else if ( squaresOnBoard[i] === -1){
       toc.play()
-      allSquares[sqId].style.backgroundColor = "red"
-      allSquares[sqId].innerText = "O"
+      allSquares[sqId].style.backgroundImage = "url(/images/o.png)"
     }else if (squaresOnBoard[i] === null) { 
-      allSquares[sqId].style.backgroundColor = "grey"
+      allSquares[sqId].style.backgroundImage = ""
       allSquares[sqId].innerText = ""
     } 
   }
@@ -106,7 +104,7 @@ function handleClick(event) {
 
   index = parseInt(event.target.id.charAt(2))
   
-  if (winner === 1 || winner === -1 || winner === 't'){
+  if (winner !==null){
     return
   }else{
     if (squaresOnBoard[index]!==null){return} 
