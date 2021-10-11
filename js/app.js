@@ -5,14 +5,14 @@
 const winningCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
 const tic = new Audio('../audio/clock.wav')
 const toc = new Audio('../audio/button6.wav')
-const tie = new Audio(`../audio/outOfTouch.wav`)
-const win = new Audio('../audio/weAreChampions.wav')
+const tie = new Audio(`../audio/Zonk-sound.mp3`)
+const win = new Audio('../audio/Arcade-town-8-bit-melody-sound-logo.mp3')
 
 /*---------------------------- Variables (state) ----------------------------*/
 // initialize variables needed for game state tracking
 // will not be initialized until init()
 
-let turn, winner, squaresOnBoard, sumOfClicks
+let turn, winner, squaresOnBoard, sumOfClicks, winningCombo
 
 /*------------------------ Cached Element References ------------------------*/
 // cached element references that are accessed through out the code
@@ -24,6 +24,7 @@ const board = document.querySelector(".board")
 const allSquares = document.querySelectorAll('.square')
 const statusMessage = document.querySelector('#message')
 const replayButton = document.querySelector("#reset")
+const logo = document.querySelector("#logo")
 
 /*----------------------------- Event Listeners -----------------------------*/
 // event listeners for the actions a user can do on the board in HTML
@@ -44,12 +45,18 @@ function init(){
   
   //the following lines stop sound playback upon reset
   //and reset the sound t begin from the start upon next play
+  
+  for (let i=0; i<9;i++){
+  allSquares[i].style.backgroundColor = ''
+  allSquares[i].className = 'square'}
+  logo.className = ""
   statusMessage.className =""
   win.pause()
   win.currentTime = 0;
   tie.pause()
   tie.currentTime = 0;
 
+  winningCombo = []
   turn = 1
   winner = null
   squaresOnBoard = [null,null,null,null,null,null,null,null,null]
@@ -59,7 +66,6 @@ function init(){
 
 function render(){
   // Provides output of the current game state to the screen
-
   //displays who turn it is
   `${statusMessage.innerText = turn === 1 ? "Player X it is your turn!": "Player O it is your turn!"}`
   statusMessage.className ="animate__animated animate__heartBeat"
@@ -68,8 +74,14 @@ function render(){
   if (winner !== null){
   `${statusMessage.innerText = winner === 1 ? "Player X wins!" : winner===-1 ?"Player O wins!": "It's a tie!"}`
   statusMessage.className ="animate__animated animate__wobble" 
+  logo.className = "animate__animated animate__jello"
+  winningCombo.forEach(function(windex){
+    allSquares[windex].style.backgroundColor = 'rgba(248, 255, 0, .8)'
+    allSquares[windex].style.borderRadius = '35px'
+    allSquares[windex].className = 'animate__animated animate__flip'
+  })    
   }
-
+  
   // render the status of a squareOnTheBoard based upon the value 
   // found at the corresponding index
   // sound effects, css and innerText of HTML elements are all set
@@ -82,7 +94,7 @@ function render(){
     if ( squaresOnBoard[i] === 1) {
       tic.play()
       allSquares[sqId].style.backgroundImage = "url(/images/x.png)"
-    } else if ( squaresOnBoard[i] === -1){
+    } else if (squaresOnBoard[i] === -1){
       toc.play()
       allSquares[sqId].style.backgroundImage = "url(/images/o.png)"
     }else if (squaresOnBoard[i] === null) { 
@@ -112,7 +124,6 @@ function handleClick(event) {
     if (squaresOnBoard[index]!==null){return} 
   }
   squaresOnBoard[index] = turn
-  
   turn = turn*-1
   winner=getWinner() 
   render()
@@ -132,9 +143,13 @@ function getWinner(){
       sumOfClicks += squaresOnBoard[indexLocation]
       if (Math.abs(sumOfClicks)===3){
          winner=squaresOnBoard[indexLocation]
+         tie.pause()
          win.play()
-      } else if (squaresOnBoard.includes(null)===false){
-          winner='t' && tie.play()
+         winningCombo = array
+      } else if (squaresOnBoard.includes(null)===false && winner===null){
+          winner='t'
+          win.pause()
+          tie.play()
       }
     })
   })
