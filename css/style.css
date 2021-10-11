@@ -58,18 +58,17 @@ button:hover {
   background-color: black;
   color: white;
 }
-#logo {
- 
 
+#logo {
   content: url(/images/tictactoe\ logo.png);
   max-width: 25vmin;
   height: auto;
   z-index: 10;  
   position:absolute;  
   top: 11vmin;
-  
 }
 
 #message {
   color: green;
 }
+

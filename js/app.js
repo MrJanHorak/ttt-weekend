@@ -12,7 +12,7 @@ const win = new Audio('../audio/Arcade-town-8-bit-melody-sound-logo.mp3')
 // initialize variables needed for game state tracking
 // will not be initialized until init()
 
-let turn, winner, squaresOnBoard, sumOfClicks, winningCombo
+let turn, winner, squaresOnBoard, sumOfClicks, winningCombo, moveCounter,emptySquare, nextMove
 
 /*------------------------ Cached Element References ------------------------*/
 // cached element references that are accessed through out the code
@@ -56,10 +56,12 @@ function init(){
   tie.pause()
   tie.currentTime = 0;
 
+  emptySquare = null  
   winningCombo = []
   turn = 1
   winner = null
   squaresOnBoard = [null,null,null,null,null,null,null,null,null]
+  nextMove = null
   render()
   
 }
@@ -99,7 +101,6 @@ function render(){
       allSquares[sqId].style.backgroundImage = "url(/images/o.png)"
     }else if (squaresOnBoard[i] === null) { 
       allSquares[sqId].style.backgroundImage = ""
-      allSquares[sqId].innerText = ""
     } 
   }
 }
@@ -123,9 +124,15 @@ function handleClick(event) {
   }else{
     if (squaresOnBoard[index]!==null){return} 
   }
+
   squaresOnBoard[index] = turn
   turn = turn*-1
-  winner=getWinner() 
+
+  // if (turn===-1){
+  //    console.log(computerPlayer())
+  //  }
+
+  winner=getWinner()
   render()
 }
 
@@ -142,10 +149,10 @@ function getWinner(){
     array.forEach(function(indexLocation){
       sumOfClicks += squaresOnBoard[indexLocation]
       if (Math.abs(sumOfClicks)===3){
-         winner=squaresOnBoard[indexLocation]
-         tie.pause()
-         win.play()
-         winningCombo = array
+        winner=squaresOnBoard[indexLocation]
+        tie.pause()
+        win.play()
+        winningCombo = array
       } else if (squaresOnBoard.includes(null)===false && winner===null){
           winner='t'
           win.pause()
@@ -153,5 +160,72 @@ function getWinner(){
       }
     })
   })
-  return winner
+return winner
 }
+
+// an attempt at computerAI
+
+// function computerPlayer(){
+//   console.log('computer Player')
+//   winningCombos.forEach(function(array){
+
+//     console.log(array)
+
+//     moveCounter = 0
+
+//     array.forEach(function(indexLocation){
+//       moveCounter += squaresOnBoard[indexLocation]
+//       console.log('move counter',moveCounter)
+
+//       if (moveCounter===-2){
+//         array.forEach(function(square){
+//           if (squaresOnBoard[square]===null){
+//             emptySquare = square}
+//         nextMove=squaresOnBoard[emptySquare]
+//         turn=1
+//         squaresOnBoard[nextMove] = -1
+//         return
+//       })
+//     } else if (moveCounter===2){
+//       console.log('moveCounter in plus 2',moveCounter)
+//       array.forEach(function(square){
+//         if (squaresOnBoard[square]===null){
+//           emptySquare = square}
+//       nextMove=squaresOnBoard[emptySquare]
+//       turn=1
+//       squaresOnBoard[nextMove] = -1
+//       return
+//     })
+//     } else if (moveCounter===-1){
+//       array.forEach(function(square){
+//         if (squaresOnBoard[square]===null){
+//           emptySquare = square}
+//       nextMove=squaresOnBoard[emptySquare]
+//       turn=1
+//       squaresOnBoard[nextMove] = -1
+//       return
+//     })
+//     } else if (moveCounter===1){
+//       array.forEach(function(square){
+//         console.log('square',square)
+//         if (squaresOnBoard[square]===null){
+//           emptySquare = square}
+//           console.log('emptySquare',emptySquare)
+//       nextMove=squaresOnBoard[emptySquare]
+//       console.log('nextMove',nextMove)
+//       turn=1
+//       squaresOnBoard[emptySquare] = -1
+//       return
+//     })
+//     } else if (moveCounter===0){
+//           if (squaresOnBoard[indexLocation]===null){
+//           emptySquare = indexLocation}
+//       nextMove=squaresOnBoard[emptySquare]
+//       turn=1
+//       squaresOnBoard[nextMove] = -1
+//       return
+//     }
+  
+//   })
+//   })
+// }
