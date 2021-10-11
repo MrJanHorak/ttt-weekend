@@ -16,18 +16,16 @@ body {
 
 section.board {
   display: grid;
-  grid-template-rows: repeat(3, 10vmin);
-  grid-template-columns: repeat(3, 10vmin);
+  grid-template-rows: repeat(3, 17vmin);
+  grid-template-columns: repeat(3, 17vmin);
   grid-gap: 0vmin;
-  margin: 10px auto;
+  margin: 5px auto;
   align-items: stretch;
   
 }
 
 div {
-  background: transparent;
-  margin: 16px 12px 0px 10px;
-  padding: 14px;
+  margin: 10px 12px 0px 10px;
   background-position: center;
   background-size: cover;
 

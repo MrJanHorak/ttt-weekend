@@ -44,7 +44,7 @@ function init(){
   
   //the following lines stop sound playback upon reset
   //and reset the sound t begin from the start upon next play
-
+  statusMessage.className =""
   win.pause()
   win.currentTime = 0;
   tie.pause()
@@ -62,10 +62,12 @@ function render(){
 
   //displays who turn it is
   `${statusMessage.innerText = turn === 1 ? "Player X it is your turn!": "Player O it is your turn!"}`
+  statusMessage.className ="animate__animated animate__heartBeat"
 
   //checks if there is a winner or tie and displays accordingly
   if (winner !== null){
-  `${statusMessage.innerText = winner === 1 ? "Player X wins!" : winner===-1 ?"Player O wins!": "It's a tie!"}` 
+  `${statusMessage.innerText = winner === 1 ? "Player X wins!" : winner===-1 ?"Player O wins!": "It's a tie!"}`
+  statusMessage.className ="animate__animated animate__wobble" 
   }
 
   // render the status of a squareOnTheBoard based upon the value 
