@@ -131,7 +131,7 @@ function getWinner(){
       if (Math.abs(sumOfClicks)===3){
          winner=squaresOnBoard[indexLocation]
          win.play()
-      } else if (squaresOnBoard.includes(null)===false && winner===null){
+      } else if (squaresOnBoard.includes(null)===false){
           winner='t' && tie.play()
       }
     })

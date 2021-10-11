@@ -1,14 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
 body {
     /*background-color: gray;
 	/* Use a system font, if none are available use an available sans-sarif   font */
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-family: 'Permanent Marker', cursive;
   height: 100vh;
   display: flex;
   flex-direction: column;
   text-align: center;
-  background-color: transparent;
-  background-image: url('/images/My Post.png');
-  background-size: cover;
+  background-image: url('/images/tictactoe background.png');
+  overflow: hidden;
+
+
 }
 
 section.board {
@@ -16,14 +19,15 @@ section.board {
   grid-template-rows: repeat(3, 10vmin);
   grid-template-columns: repeat(3, 10vmin);
   grid-gap: 0vmin;
-  margin: 25px auto;
+  margin: 10px auto;
   align-items: stretch;
   
 }
 
 div {
   background: transparent;
-  margin: 16px 10px 0px 10px;
+  margin: 16px 12px 0px 10px;
+  padding: 14px;
   background-position: center;
   background-size: cover;
 
@@ -35,18 +39,40 @@ div {
   background-size: cover;
   }
 
+  .square:hover {
+    background-color: rgba(233, 228, 161, 0.9);
+    border-radius: 25px;
+  }
+
 button {
+  font-family: 'Permanent Marker', cursive;
   outline: none;
   padding: 10px 20px;
   font-size: 1rem;
   font-weight: bold;
-  background: darkgray;
+  background: transparent;
   transition: all 0.2s ease-in-out;
-  margin: 15px auto;
-  border-radius: 25%;
+  margin: 25px auto;
+  border-radius: 28%;
 }
 
 button:hover {
   background-color: black;
   color: white;
+}
+#logo {
+ 
+
+  content: url(/images/tictactoe\ logo.png);
+  max-width: 25vmin;
+  height: auto;
+  z-index: 10;  
+  position:absolute;  
+
+  top: 11vmin;
+  
+}
+
+#message {
+  color: green;
 }
