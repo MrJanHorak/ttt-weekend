@@ -203,7 +203,12 @@ function computerPlayer(){
         if (squaresOnBoard[square]===null){
           squaresOnBoard[square]= -1
           turn = 1
-        return}
+        return} else {
+          squaresOnBoard.every(function(box){
+            if (squaresOnBoard[box]===null){
+              squaresOnBoard[box]=-1
+              return}
+          })}
       return
     })
     }
@@ -212,11 +217,13 @@ function computerPlayer(){
   })
 }
 
-// found a useful function to randomize an array
+// I found a useful function to randomize an array
 // https://www.codegrepper.com/code-examples/javascript/how+to+shuffle+an+array+with+loop+in+javascript
-// To create a sense of inteligence I think adding a random
+// To create a sense of inteligence I tought adding a random
 // order to the array will emulate an actual decision
 // it will also make the game play more interesting if it works.
+// I stumbled across this function when looking and decided
+// not to recreate the wheel.
 
 function randomArrayShuffle(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
