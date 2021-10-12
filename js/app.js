@@ -128,9 +128,9 @@ function handleClick(event) {
   squaresOnBoard[index] = turn
   turn = turn*-1
 
-  // if (turn===-1){
-  //    console.log(computerPlayer())
-  //  }
+  if (turn===-1){
+     console.log(computerPlayer())
+   }
 
   winner=getWinner()
   render()
@@ -143,7 +143,7 @@ function getWinner(){
   // not. A wuinner is found when the values contained at the index 
   // positions provided by the winningCombo array add up to an absolute
   // value of 3 (that means -3 or +3). Set winner value and return.
-
+  console.log('whose turn is it',turn)
   winningCombos.forEach(function(array){
     sumOfClicks = 0
     array.forEach(function(indexLocation){
@@ -165,67 +165,67 @@ return winner
 
 // an attempt at computerAI
 
-// function computerPlayer(){
-//   console.log('computer Player')
-//   winningCombos.forEach(function(array){
+function computerPlayer(){
+  console.log('computer Player')
+  randomArrayShuffle(winningCombos).forEach(function(array){
+    console.log('array',array)
+    moveCounter = 0
+    array.forEach(function(indexLocation){
+      moveCounter += squaresOnBoard[indexLocation]
+      console.log('move counter',moveCounter)
+      
+      if (moveCounter===-2 && turn ===-1){
+        randomArrayShuffle(array).every(function(square){
+          if (squaresOnBoard[square]===null){
+            squaresOnBoard[square] = -1
+            turn=1
+            return }
+          return    
+      })
+    } else if (moveCounter===2 && turn ===-1){
+      randomArrayShuffle(array).every(function(square){
+        if (squaresOnBoard[square]===null){
+          squaresOnBoard[square] = -1
+          turn=1
+          return}
+        return
+    })
+    } else if (moveCounter===-1 && turn ===-1){    
+      randomArrayShuffle(array).every(function(square){
+        if (squaresOnBoard[square]===null){
+          squaresOnBoard[square] = -1
+          turn=1
+          return}
+        return
+    })
+    } else if (moveCounter===1 && turn ===-1){
+      randomArrayShuffle(array).every(function(square){
+        if (squaresOnBoard[square]===null){
+          squaresOnBoard[square]= -1
+          turn = 1
+        return}
+      return
+    })
+    }
 
-//     console.log(array)
+  })
+  })
+}
 
-//     moveCounter = 0
+// found a useful function to randomize an array
+// https://www.codegrepper.com/code-examples/javascript/how+to+shuffle+an+array+with+loop+in+javascript
+// To create a sense of inteligence I think adding a random
+// order to the array will emulate an actual decision
+// it will also make the game play more interesting if it works.
 
-//     array.forEach(function(indexLocation){
-//       moveCounter += squaresOnBoard[indexLocation]
-//       console.log('move counter',moveCounter)
-
-//       if (moveCounter===-2){
-//         array.forEach(function(square){
-//           if (squaresOnBoard[square]===null){
-//             emptySquare = square}
-//         nextMove=squaresOnBoard[emptySquare]
-//         turn=1
-//         squaresOnBoard[nextMove] = -1
-//         return
-//       })
-//     } else if (moveCounter===2){
-//       console.log('moveCounter in plus 2',moveCounter)
-//       array.forEach(function(square){
-//         if (squaresOnBoard[square]===null){
-//           emptySquare = square}
-//       nextMove=squaresOnBoard[emptySquare]
-//       turn=1
-//       squaresOnBoard[nextMove] = -1
-//       return
-//     })
-//     } else if (moveCounter===-1){
-//       array.forEach(function(square){
-//         if (squaresOnBoard[square]===null){
-//           emptySquare = square}
-//       nextMove=squaresOnBoard[emptySquare]
-//       turn=1
-//       squaresOnBoard[nextMove] = -1
-//       return
-//     })
-//     } else if (moveCounter===1){
-//       array.forEach(function(square){
-//         console.log('square',square)
-//         if (squaresOnBoard[square]===null){
-//           emptySquare = square}
-//           console.log('emptySquare',emptySquare)
-//       nextMove=squaresOnBoard[emptySquare]
-//       console.log('nextMove',nextMove)
-//       turn=1
-//       squaresOnBoard[emptySquare] = -1
-//       return
-//     })
-//     } else if (moveCounter===0){
-//           if (squaresOnBoard[indexLocation]===null){
-//           emptySquare = indexLocation}
-//       nextMove=squaresOnBoard[emptySquare]
-//       turn=1
-//       squaresOnBoard[nextMove] = -1
-//       return
-//     }
-  
-//   })
-//   })
-// }
+function randomArrayShuffle(array) {
+    let currentIndex = array.length, temporaryValue, randomIndex;
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+    return array;
+  }
