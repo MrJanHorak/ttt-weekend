@@ -21,5 +21,8 @@ Each function is explained in more detail in the app.js file.
 
 I hope you enjoy this game!
 
-Possible future versions could include an attemnpt at a basic computer AI because my brain can't stop trying to figure it out.
+The computer AI is a very basic attempt at creating a computer player. Using the same process as the getWinner function, setting up a 'filter' of if then statements based upon human decision making (mine) the computers next move is determined by the location and ammount of the opponents placement. 
 
+In the first functioning attempt I realised the computer would always place its 'O' in the first possible option as the squares were run through the for loop repeatadly in the same order. To add a touch of variation and to make it harder to determine where the computer will place its next move I saw it needed a random aspect. I was looking for a way to randomise the array it as looking through without altering the original array and found a great little code snippet online at https://www.codegrepper.com/code-examples/javascript/how+to+shuffle+an+array+with+loop+in+javascript after adding that function to the AI function the computer almost seems human ...
+
+Next variation will offer an option to select human vs human or human vs computer option.
