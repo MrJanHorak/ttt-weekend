@@ -2,17 +2,36 @@
 // An array of arrays containing all 8 possible win combinations
 // Audio clips for enhanced game playing experience
 
-const winningCombos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
-const tic = new Audio('../audio/clock.wav')
-const toc = new Audio('../audio/button6.wav')
-const tie = new Audio(`../audio/Zonk-sound.mp3`)
-const win = new Audio('../audio/Arcade-town-8-bit-melody-sound-logo.mp3')
+const winningCombos = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+const tic = new Audio("../audio/clock.wav");
+const toc = new Audio("../audio/button6.wav");
+const tie = new Audio(`../audio/Zonk-sound.mp3`);
+const win = new Audio("../audio/Arcade-town-8-bit-melody-sound-logo.mp3");
 
 /*---------------------------- Variables (state) ----------------------------*/
 // initialize variables needed for game state tracking
 // will not be initialized until init()
 
-let turn, winner, squaresOnBoard, sumOfClicks, winningCombo, moveCounter,emptySquare, nextMove
+let turn,
+  winner,
+  squaresOnBoard,
+  sumOfClicks,
+  winningCombo,
+  moveCounter,
+  emptySquare,
+  nextMove,
+  player,
+  player1,
+  player2;
 
 /*------------------------ Cached Element References ------------------------*/
 // cached element references that are accessed through out the code
@@ -20,91 +39,109 @@ let turn, winner, squaresOnBoard, sumOfClicks, winningCombo, moveCounter,emptySq
 // the board is used to access the target.id on the click event.
 // the allSquares calls the class of the squares
 
-const board = document.querySelector(".board")
-const allSquares = document.querySelectorAll('.square')
-const statusMessage = document.querySelector('#message')
-const replayButton = document.querySelector("#reset")
-const logo = document.querySelector("#logo")
+const board = document.querySelector(".board");
+const allSquares = document.querySelectorAll(".square");
+const statusMessage = document.querySelector("#message");
+const playersMessage = document.querySelector("#players");
+const replayButton = document.querySelector("#reset");
+const playerVsButton = document.querySelector("#selector");
+const logo = document.querySelector("#logo");
 
 /*----------------------------- Event Listeners -----------------------------*/
 // event listeners for the actions a user can do on the board in HTML
 // one for the board to see which square is selected
 // the other for the reset or play again button
 
-board.addEventListener("click", handleClick)
-replayButton.addEventListener("click", init)
+board.addEventListener("click", handleClick);
+replayButton.addEventListener("click", init);
+playerVsButton.addEventListener("click", switchPlayer);
 
 /*-------------------------------- Functions --------------------------------*/
-init()
+init();
 
-function init(){
+function init() {
   // initialize beginning game status
   // initialize the default game variables
   // initialize the beginning messages to start the game
   // re-initialize the game when play again is clicked
-  
+
   //the following lines stop sound playback upon reset
   //and reset the sound t begin from the start upon next play
-  
-  for (let i=0; i<9;i++){
-  allSquares[i].style.backgroundColor = ''
-  allSquares[i].className = 'square'}
-  logo.className = ""
-  statusMessage.className =""
-  win.pause()
+
+  for (let i = 0; i < 9; i++) {
+    allSquares[i].style.backgroundColor = "";
+    allSquares[i].className = "square";
+  }
+  logo.className = "";
+  statusMessage.className = "";
+  win.pause();
   win.currentTime = 0;
-  tie.pause()
+  tie.pause();
   tie.currentTime = 0;
 
-  emptySquare = null  
-  winningCombo = []
-  turn = 1
-  winner = null
-  squaresOnBoard = [null,null,null,null,null,null,null,null,null]
-  nextMove = null
-  render()
-  
+  player = "human";
+  playerVsButton.style.backgroundColor = "";
+  playerVsButton.innerText = "Human vs Human";
+  emptySquare = null;
+  winningCombo = [];
+  turn = 1;
+  winner = null;
+  squaresOnBoard = [null, null, null, null, null, null, null, null, null];
+  nextMove = null;
+  render();
 }
 
-function render(){
+function render() {
+  if (playerVsButton.innerText === "Human vs Human") {
+    player1 = "Player 1";
+    player2 = "Player 2";
+  } else {
+    player1 = "Human player";
+    player2 = "Computer player";
+  }
   // Provides output of the current game state to the screen
   //displays who turn it is
-  `${statusMessage.innerText = turn === 1 ? "Player X it is your turn!": "Player O it is your turn!"}`
-  statusMessage.className ="animate__animated animate__heartBeat"
+  playersMessage.innerHTML = `<span class="color-blue"> ${player1} playing as X </span> vs. <span class="color-red"> ${player2} playing as O</span>`;
+  statusMessage.innerText =
+    turn === 1 ? `${player1} it is your turn!` : `${player2} it is your turn!`;
+  statusMessage.className = "animate__animated animate__heartBeat";
 
   //checks if there is a winner or tie and displays accordingly
-  if (winner !== null){
-  `${statusMessage.innerText = winner === 1 ? "Player X wins!" : winner===-1 ?"Player O wins!": "It's a tie!"}`
-  statusMessage.className ="animate__animated animate__wobble" 
-  logo.className = "animate__animated animate__jello"
-  winningCombo.forEach(function(windex){
-    allSquares[windex].style.backgroundColor = 'rgba(248, 255, 0, .8)'
-    allSquares[windex].style.borderRadius = '35px'
-    allSquares[windex].className = 'animate__animated animate__flip'
-  })    
+  if (winner !== null) {
+    statusMessage.innerText =
+      winner === 1
+        ? `${player1} wins!`
+        : winner === -1
+        ? `${player2} wins!`
+        : "It's a tie!";
   }
-  
-  // render the status of a squareOnTheBoard based upon the value 
+  statusMessage.className = "animate__animated animate__wobble";
+  logo.className = "animate__animated animate__jello";
+  winningCombo.forEach(function (windex) {
+    allSquares[windex].style.backgroundColor = "rgba(248, 255, 0, .8)";
+    allSquares[windex].style.borderRadius = "35px";
+    allSquares[windex].className = "animate__animated animate__flip";
+  });
+
+  // render the status of a squareOnTheBoard based upon the value
   // found at the corresponding index
   // sound effects, css and innerText of HTML elements are all set
   // or triggered here as well.
-  
-  for (let i=0; i<9; i++){
 
-    let sqId = parseInt(allSquares[i].id.charAt(2))
+  for (let i = 0; i < 9; i++) {
+    let sqId = parseInt(allSquares[i].id.charAt(2));
 
-    if ( squaresOnBoard[i] === 1) {
-      tic.play()
-      allSquares[sqId].style.backgroundImage = "url(/images/x.png)"
-    } else if (squaresOnBoard[i] === -1){
-      toc.play()
-      allSquares[sqId].style.backgroundImage = "url(/images/o.png)"
-    }else if (squaresOnBoard[i] === null) { 
-      allSquares[sqId].style.backgroundImage = ""
-    } 
+    if (squaresOnBoard[i] === 1) {
+      tic.play();
+      allSquares[sqId].style.backgroundImage = "url(/images/x.png)";
+    } else if (squaresOnBoard[i] === -1) {
+      toc.play();
+      allSquares[sqId].style.backgroundImage = "url(/images/o.png)";
+    } else if (squaresOnBoard[i] === null) {
+      allSquares[sqId].style.backgroundImage = "";
+    }
   }
 }
-
 
 function handleClick(event) {
   // handleClick function obtains index of square clicked by user
@@ -114,125 +151,145 @@ function handleClick(event) {
   // if the game is over it will return instantly
   // it changes the player turn value by multiplying with -1
   // it calls render to update the board to match the user actions
-    
+
   //index = parseInt(event.target.id)
 
-  index = parseInt(event.target.id.charAt(2))
-  
-  if (winner !==null){
-    return
-  }else{
-    if (squaresOnBoard[index]!==null){return} 
+  index = parseInt(event.target.id.charAt(2));
+
+  if (winner !== null) {
+    return;
+  } else {
+    if (squaresOnBoard[index] !== null) {
+      return;
+    }
   }
 
-  squaresOnBoard[index] = turn
-  turn = turn*-1
+  squaresOnBoard[index] = turn;
+  turn = turn * -1;
 
-  if (turn===-1){
-     console.log(computerPlayer())
-   }
+  if (turn === -1) {
+    computerPlayer();
+  }
 
-  winner=getWinner()
-  render()
+  winner = getWinner();
+  render();
 }
 
-function getWinner(){
-  // loop through each possible winning combo recorded in the 
-  // winningCombos array and then loop each of the possible combos 
-  // through the squaresOnBoard to see if they provide a winner or 
-  // not. A wuinner is found when the values contained at the index 
+function getWinner() {
+  // loop through each possible winning combo recorded in the
+  // winningCombos array and then loop each of the possible combos
+  // through the squaresOnBoard to see if they provide a winner or
+  // not. A wuinner is found when the values contained at the index
   // positions provided by the winningCombo array add up to an absolute
   // value of 3 (that means -3 or +3). Set winner value and return.
-  console.log('whose turn is it',turn)
-  winningCombos.forEach(function(array){
-    sumOfClicks = 0
-    array.forEach(function(indexLocation){
-      sumOfClicks += squaresOnBoard[indexLocation]
-      if (Math.abs(sumOfClicks)===3){
-        winner=squaresOnBoard[indexLocation]
-        tie.pause()
-        win.play()
-        winningCombo = array
-      } else if (squaresOnBoard.includes(null)===false && winner===null){
-          winner='t'
-          win.pause()
-          tie.play()
+  console.log("whose turn is it? ", turn);
+  winningCombos.forEach(function (array) {
+    sumOfClicks = 0;
+    array.forEach(function (indexLocation) {
+      sumOfClicks += squaresOnBoard[indexLocation];
+      if (Math.abs(sumOfClicks) === 3) {
+        winner = squaresOnBoard[indexLocation];
+        tie.pause();
+        win.play();
+        winningCombo = array;
+      } else if (squaresOnBoard.includes(null) === false && winner === null) {
+        winner = "t";
+        win.pause();
+        tie.play();
       }
-    })
-  })
-return winner
+    });
+  });
+  return winner;
 }
 
 // an attempt at computerAI
 
-function computerPlayer(){
-  console.log('computer Player')
-  randomArrayShuffle(winningCombos).forEach(function(array){
-    console.log('array',array)
-    moveCounter = 0
-    array.forEach(function(indexLocation){
-      moveCounter += squaresOnBoard[indexLocation]
-      console.log('move counter',moveCounter)
-      
-      if (moveCounter===-2 && turn ===-1){
-        randomArrayShuffle(array).every(function(square){
-          if (squaresOnBoard[square]===null){
-            squaresOnBoard[square] = -1
-            turn=1
-            return }
-          return    
-      })
-    } else if (moveCounter===2 && turn ===-1){
-      randomArrayShuffle(array).every(function(square){
-        if (squaresOnBoard[square]===null){
-          squaresOnBoard[square] = -1
-          turn=1
-          return}
-        return
-    })
-    } else if (moveCounter===-1 && turn ===-1){    
-      randomArrayShuffle(array).every(function(square){
-        if (squaresOnBoard[square]===null){
-          squaresOnBoard[square] = -1
-          turn=1
-          return}
-        return
-    })
-    } else if (moveCounter===1 && turn ===-1){
-      randomArrayShuffle(array).every(function(square){
-        if (squaresOnBoard[square]===null){
-          squaresOnBoard[square]= -1
-          turn = 1
-        return} else {
-          squaresOnBoard.every(function(box){
-            if (squaresOnBoard[box]===null){
-              squaresOnBoard[box]=-1
-              return}
-          })}
-      return
-    })
-    }
+function computerPlayer() {
+  if (player === "human") {
+    return;
+  }
 
-  })
-  })
+  let comboSums = [];
+
+  winningCombos.forEach(function (array) {
+    let moveCounter = 0;
+    array.forEach(function (indexLocation) {
+      console.log("array", array);
+      console.log("square", squaresOnBoard[indexLocation]);
+      moveCounter += squaresOnBoard[indexLocation];
+    });
+    comboSums.push(moveCounter);
+  });
+  console.log("comboSums", comboSums);
+  console.log("movecounter", moveCounter);
+
+  if (comboSums.includes(-2)) {
+    let arrayIndex = comboSums.indexOf(-2);
+    winningCombos[arrayIndex].forEach(function (square) {
+      if (squaresOnBoard[square] === null) {
+        squaresOnBoard[square] = -1;
+        turn = 1;
+        return;
+      }
+      return;
+    });
+  } else if (comboSums.includes(2)) {
+    let arrayIndex = comboSums.indexOf(2);
+    winningCombos[arrayIndex].forEach(function (square) {
+      if (squaresOnBoard[square] === null) {
+        squaresOnBoard[square] = -1;
+        turn = 1;
+        return;
+      }
+      return;
+    });
+  } else if (comboSums.includes(-1)) {
+    let arrayIndex = comboSums.indexOf(-1);
+    selectedArray = winningCombos[arrayIndex];
+    if (squaresOnBoard[selectedArray[0]] === null) {
+      squaresOnBoard[selectedArray[0]] = -1;
+      turn = 1;
+      return;
+    } else if (squaresOnBoard[selectedArray[1]] === null) {
+      squaresOnBoard[selectedArray[1]] = -1;
+      turn = 1;
+      return;
+    } else if (squaresOnBoard[selectedArray[2]] === null) {
+      squaresOnBoard[selectedArray[2]] = -1;
+      turn = 1;
+      return;
+    }
+    return;
+  } else if (comboSums.includes(1)) {
+    let arrayIndex = comboSums.indexOf(1);
+    selectedArray = winningCombos[arrayIndex];
+    console.log("squares on Board", squaresOnBoard);
+    if (squaresOnBoard[selectedArray[0]] === null) {
+      squaresOnBoard[selectedArray[0]] = -1;
+      turn = 1;
+      return;
+    } else if (squaresOnBoard[selectedArray[1]] === null) {
+      squaresOnBoard[selectedArray[1]] = -1;
+      turn = 1;
+      return;
+    } else if (squaresOnBoard[selectedArray[2]] === null) {
+      squaresOnBoard[selectedArray[2]] = -1;
+      turn = 1;
+      return;
+    }
+    return;
+  }
+  return;
 }
 
-// I found a useful function to randomize an array
-// https://www.codegrepper.com/code-examples/javascript/how+to+shuffle+an+array+with+loop+in+javascript
-// To create a sense of inteligence I tought adding a random
-// order to the array will emulate an actual decision
-// it will also make the game play more interesting if it works.
-// I stumbled across this function when looking and decided
-// not to recreate the wheel.
-
-function randomArrayShuffle(array) {
-    let currentIndex = array.length, temporaryValue, randomIndex;
-    while (0 !== currentIndex) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-    return array;
+function switchPlayer() {
+  if (player === "human") {
+    player = "computer";
+    playerVsButton.style.backgroundColor = "rgb(183, 2, 15)";
+    playerVsButton.innerText = "Human vs Comp";
+  } else {
+    player = "human";
+    playerVsButton.style.backgroundColor = "";
+    playerVsButton.innerText = "Human vs Human";
   }
+}

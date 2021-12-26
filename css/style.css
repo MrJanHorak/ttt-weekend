@@ -31,17 +31,6 @@ div {
 
 }
 
-.board {
-  background-color: transparent;
-  background-image: url('/images/grid.png');
-  background-size: cover;
-  }
-
-  .square:hover {
-    background-color: rgba(233, 228, 161, 0.9);
-    border-radius: 25px;
-  }
-
 button {
   font-family: 'Permanent Marker', cursive;
   outline: none;
@@ -50,13 +39,29 @@ button {
   font-weight: bold;
   background: transparent;
   transition: all 0.2s ease-in-out;
-  margin: 25px auto;
+  margin: 5px auto;
   border-radius: 28%;
 }
 
 button:hover {
   background-color: black;
   color: white;
+}
+.color-blue {
+  color: rgb(27, 2, 132);
+}
+.color-red {
+  color: rgb(183, 2, 15);
+}
+.board {
+  background-color: transparent;
+  background-image: url('/images/grid.png');
+  background-size: cover;
+  }
+
+.square:hover {
+  background-color: rgba(233, 228, 161, 0.9);
+  border-radius: 25px;
 }
 
 #logo {
@@ -70,5 +75,9 @@ button:hover {
 
 #message {
   color: green;
+  margin-bottom: 5px;
 }
 
+#players {
+  color: green;
+}
