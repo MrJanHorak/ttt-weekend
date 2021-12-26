@@ -79,9 +79,9 @@ function init() {
   tie.pause();
   tie.currentTime = 0;
 
-  player = "human";
-  playerVsButton.style.backgroundColor = "";
-  playerVsButton.innerText = "Human vs Human";
+  player = "computer";
+  playerVsButton.style.backgroundColor = "rgb(183, 2, 15)";
+  playerVsButton.innerText = "Human vs Comp";
   emptySquare = null;
   winningCombo = [];
   turn = 1;
@@ -89,6 +89,13 @@ function init() {
   squaresOnBoard = [null, null, null, null, null, null, null, null, null];
   nextMove = null;
   render();
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
 
 function render() {
@@ -182,7 +189,7 @@ function getWinner() {
   // not. A wuinner is found when the values contained at the index
   // positions provided by the winningCombo array add up to an absolute
   // value of 3 (that means -3 or +3). Set winner value and return.
-  console.log("whose turn is it? ", turn);
+
   winningCombos.forEach(function (array) {
     sumOfClicks = 0;
     array.forEach(function (indexLocation) {
@@ -204,24 +211,28 @@ function getWinner() {
 
 // an attempt at computerAI
 
+// Here I sat down and though about my approach to the game and attempted
+// to put it into code. First I would examine the state of the board. Then
+// determined by the ammount of O's the oppenent has I would place an x to
+// block the opponent. I have attempted this by using conditional
+// if statememnts. It works. There is not strategy on the computers part, just pure
+// conditionals it abides by.
+
+shuffle(winningCombos);
+console.log(winningCombos);
 function computerPlayer() {
   if (player === "human") {
     return;
   }
 
   let comboSums = [];
-
   winningCombos.forEach(function (array) {
-    let moveCounter = 0;
+    moveCounter = 0;
     array.forEach(function (indexLocation) {
-      console.log("array", array);
-      console.log("square", squaresOnBoard[indexLocation]);
       moveCounter += squaresOnBoard[indexLocation];
     });
     comboSums.push(moveCounter);
   });
-  console.log("comboSums", comboSums);
-  console.log("movecounter", moveCounter);
 
   if (comboSums.includes(-2)) {
     let arrayIndex = comboSums.indexOf(-2);
@@ -246,38 +257,53 @@ function computerPlayer() {
   } else if (comboSums.includes(-1)) {
     let arrayIndex = comboSums.indexOf(-1);
     selectedArray = winningCombos[arrayIndex];
-    if (squaresOnBoard[selectedArray[0]] === null) {
-      squaresOnBoard[selectedArray[0]] = -1;
-      turn = 1;
-      return;
-    } else if (squaresOnBoard[selectedArray[1]] === null) {
-      squaresOnBoard[selectedArray[1]] = -1;
-      turn = 1;
-      return;
-    } else if (squaresOnBoard[selectedArray[2]] === null) {
-      squaresOnBoard[selectedArray[2]] = -1;
-      turn = 1;
-      return;
+    if (
+      squaresOnBoard[selectedArray[0]] === null ||
+      squaresOnBoard[selectedArray[1]] === null ||
+      squaresOnBoard[selectedArray[2]] === null
+    ) {
+      if (squaresOnBoard[selectedArray[0]] === null) {
+        squaresOnBoard[selectedArray[0]] = -1;
+        turn = 1;
+        return;
+      } else if (squaresOnBoard[selectedArray[1]] === null) {
+        squaresOnBoard[selectedArray[1]] = -1;
+        turn = 1;
+        return;
+      } else if (squaresOnBoard[selectedArray[2]] === null) {
+        squaresOnBoard[selectedArray[2]] = -1;
+        turn = 1;
+        return;
+      }
     }
     return;
   } else if (comboSums.includes(1)) {
     let arrayIndex = comboSums.indexOf(1);
     selectedArray = winningCombos[arrayIndex];
-    console.log("squares on Board", squaresOnBoard);
-    if (squaresOnBoard[selectedArray[0]] === null) {
-      squaresOnBoard[selectedArray[0]] = -1;
-      turn = 1;
-      return;
-    } else if (squaresOnBoard[selectedArray[1]] === null) {
-      squaresOnBoard[selectedArray[1]] = -1;
-      turn = 1;
-      return;
-    } else if (squaresOnBoard[selectedArray[2]] === null) {
-      squaresOnBoard[selectedArray[2]] = -1;
-      turn = 1;
-      return;
+    let compFirstMove = [0, 1, 2];
+
+    shuffle(compFirstMove);
+    console.log(compFirstMove);
+
+    if (
+      squaresOnBoard[selectedArray[compFirstMove[0]]] === null ||
+      squaresOnBoard[selectedArray[compFirstMove[1]]] === null ||
+      squaresOnBoard[selectedArray[compFirstMove[2]]] === null
+    ) {
+      if (squaresOnBoard[selectedArray[compFirstMove[0]]] === null) {
+        squaresOnBoard[selectedArray[compFirstMove[0]]] = -1;
+        turn = 1;
+        return;
+      } else if (squaresOnBoard[selectedArray[compFirstMove[1]]] === null) {
+        squaresOnBoard[selectedArray[compFirstMove[1]]] = -1;
+        turn = 1;
+        return;
+      } else if (squaresOnBoard[selectedArray[compFirstMove[2]]] === null) {
+        squaresOnBoard[selectedArray[compFirstMove[2]]] = -1;
+        turn = 1;
+        return;
+      }
     }
-    return;
   }
   return;
 }
