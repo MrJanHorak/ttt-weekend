@@ -106,8 +106,10 @@ function render() {
     player1 = "Human player";
     player2 = "Computer player";
   }
+
   // Provides output of the current game state to the screen
   //displays who turn it is
+
   playersMessage.innerHTML = `<span class="color-blue"> ${player1} playing as X </span> vs. <span class="color-red"> ${player2} playing as O</span>`;
   statusMessage.innerText =
     turn === 1 ? `${player1} it is your turn!` : `${player2} it is your turn!`;
@@ -162,19 +164,20 @@ function handleClick(event) {
   //index = parseInt(event.target.id)
 
   index = parseInt(event.target.id.charAt(2));
-
+  winner = getWinner();
   if (winner !== null) {
     return;
-  } else {
-    if (squaresOnBoard[index] !== null) {
-      return;
-    }
+  } else if (squaresOnBoard[index] !== null) {
+    return;
   }
 
   squaresOnBoard[index] = turn;
   turn = turn * -1;
 
-  if (turn === -1) {
+  winner = getWinner();
+  render();
+
+  if (turn === -1 && winner === null) {
     computerPlayer();
   }
 
@@ -219,9 +222,8 @@ function getWinner() {
 // conditionals it abides by.
 
 shuffle(winningCombos);
-console.log(winningCombos);
 function computerPlayer() {
-  if (player === "human") {
+  if (player === "human" || winner !== null) {
     return;
   }
 
@@ -283,7 +285,6 @@ function computerPlayer() {
     let compFirstMove = [0, 1, 2];
 
     shuffle(compFirstMove);
-    console.log(compFirstMove);
 
     if (
       squaresOnBoard[selectedArray[compFirstMove[0]]] === null ||
@@ -305,6 +306,7 @@ function computerPlayer() {
       }
     }
   }
+  winner = getWinner();
   return;
 }
 
