@@ -16,10 +16,10 @@ Default game play is set to be against the computer, you can also choose to play
 
 # Screenshots
 
-![Imgur](https://i.imgur.com/10KjsxRl.png)
-![Imgur](https://i.imgur.com/TBgRhcgl.png)
-![Imgur](https://i.imgur.com/5VC7Mwxl.png)
-![Imgur](https://i.imgur.com/50FFFXsl.png)
+![Imgur](https://i.imgur.com/10KjsxRl.png?1)
+![Imgur](https://i.imgur.com/TBgRhcgl.png?1)
+![Imgur](https://i.imgur.com/5VC7Mwxl.png?1)
+![Imgur](https://i.imgur.com/50FFFXsl.png?1)
 
 
 # Acknowlegements
