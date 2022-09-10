@@ -1,17 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
 
 body {
-    /*background-color: gray;
+  /*background-color: gray;
 	/* Use a system font, if none are available use an available sans-sarif   font */
-	font-family: 'Permanent Marker', cursive;
+  font-family: "Permanent Marker", cursive;
   height: 100vh;
   display: flex;
   flex-direction: column;
   text-align: center;
-  background-image: url('/images/tictactoe background.png');
+  background-image: url("/images/tictactoe background.png");
   overflow: hidden;
-
-
 }
 
 section.board {
@@ -21,18 +19,16 @@ section.board {
   grid-gap: 0vmin;
   margin: 25px auto;
   align-items: stretch;
-  
 }
 
 div {
   margin: 10px 12px 0px 10px;
   background-position: center;
   background-size: cover;
-
 }
 
 button {
-  font-family: 'Permanent Marker', cursive;
+  font-family: "Permanent Marker", cursive;
   outline: none;
   padding: 10px 20px;
   font-size: 1rem;
@@ -47,6 +43,14 @@ button:hover {
   background-color: black;
   color: white;
 }
+
+footer {
+  width: 100%;
+  position: fixed;
+  text-align: center;
+  bottom: 0px;
+}
+
 .color-blue {
   color: rgb(27, 2, 132);
 }
@@ -55,9 +59,9 @@ button:hover {
 }
 .board {
   background-color: transparent;
-  background-image: url('/images/grid.png');
+  background-image: url("/images/grid.png");
   background-size: cover;
-  }
+}
 
 .square:hover {
   background-color: rgba(233, 228, 161, 0.9);
@@ -68,8 +72,8 @@ button:hover {
   content: url(/images/tictactoe\ logo.png);
   max-width: 25vmin;
   height: auto;
-  z-index: 10;  
-  position:absolute;  
+  z-index: 10;
+  position: absolute;
   top: 11vmin;
 }
 
@@ -80,4 +84,9 @@ button:hover {
 
 #players {
   color: green;
+}
+
+#gitHub-icon {
+  width: 18px;
+  height: 18px;
 }
